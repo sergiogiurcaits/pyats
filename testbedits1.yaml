@@ -1,0 +1,17 @@
+testbed:
+  name: testbedits1
+devices:
+  C-R4:
+    os: iosxr
+    type: router
+    connections:
+      defaults:
+        class: unicon.Unicon
+      console:
+        protocol: ssh
+        ip: 10.255.101.4
+    credentials:
+      default:
+        # credential details common to the testbed
+        username: root
+        password: qwerty123
