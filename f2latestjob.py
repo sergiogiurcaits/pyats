@@ -16,7 +16,7 @@ def main(runtime):
         testbed = runtime.testbed
 
     # Find the location of the script in relation to the job file
-    testscript = os.path.join(os.path.dirname(__file__), 'latestjobf1.py')
+    testscript = os.path.join(os.path.dirname(__file__), 'f2latestjob.py')
 
     # run script
     runtime.tasks.run(testscript=testscript, testbed=testbed)
