@@ -6,7 +6,7 @@ import json
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
 
-testbed = load('testbedits.yaml')
+testbed = load('testbedits1.yaml')
 
 bgpsectestoutput = []
 
