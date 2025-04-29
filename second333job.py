@@ -12,7 +12,7 @@ def main(runtime):
     # Load the testbed
     # ----------------
     if not runtime.testbed:
-        testbedfile = os.path.join('testbedits01.yaml')
+        testbedfile = os.path.join('testbed29042025.yaml')
         testbed = load(testbedfile)
     else:
         testbed = runtime.testbed
