@@ -23,8 +23,7 @@ def main(runtime):
     print("Writing outputs to:", output_dir)
     os.makedirs(output_dir, exist_ok=True)
 
-    # Use Xpresso output directory or default to /tmp
-    output_dir = os.environ.get("XPRESSO_OUTPUT_DIR", "/tmp")
+    
     json_output_path = os.path.join(output_dir, "pingtest1.json")
     html_output_path = os.path.join(output_dir, "ping_test_report.html")
 
