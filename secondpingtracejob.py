@@ -33,14 +33,12 @@ def main(runtime):
 
     tasks = []
     for device in testbed.devices.values():
-        ip = device.connections.get("console", {}).get("ip")
-        if ip:
-            tasks.append((device.name, ip))
+        conn = device.connections.get("console", {})
+        raw_ip = conn.get("ip") or conn.get("host")
+        if raw_ip:
+            tasks.append((device.name, str(raw_ip)))  # Convert to string to ensure JSON compatibility
         else:
             print(f"Skipping device {device.name} - no management IP defined.")
-
-    ping_results = []
-    traceroute_results = []
 
     with ThreadPoolExecutor() as executor:
         ping_results = list(executor.map(lambda x: ping_device(*x), tasks))
@@ -50,13 +48,12 @@ def main(runtime):
     for ping, trace in zip(ping_results, traceroute_results):
         combined.append({
             **ping,
-            **{k: v for k, v in trace.items() if k not in ("device", "ip")}  # avoid duplicate keys
+            **{k: v for k, v in trace.items() if k not in ("device", "ip")}
         })
 
     with open("connectivity_results.json", "w") as f:
         json.dump(combined, f, indent=2)
 
-    # Optionally create an HTML summary
     with open("connectivity_report.html", "w") as f:
         f.write("<html><body><h1>Device Connectivity Report</h1><table border='1'>")
         f.write("<tr><th>Device</th><th>IP</th><th>Ping</th><th>Traceroute</th></tr>")
