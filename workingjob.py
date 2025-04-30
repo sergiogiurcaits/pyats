@@ -19,6 +19,9 @@ def main(runtime):
 
     bgpsectestoutput = []
     pattern = r"\w{1}\b"
+    output_dir = os.environ.get("XPRESSO_OUTPUT_DIR", "/xpresso/results")
+    print("Writing outputs to:", output_dir)
+    os.makedirs(output_dir, exist_ok=True)
 
     # Use Xpresso output directory or default to /tmp
     output_dir = os.environ.get("XPRESSO_OUTPUT_DIR", "/tmp")
@@ -213,3 +216,7 @@ def main(runtime):
         html_file.write(html_content)
 
     print(f"HTML report has been saved to '{html_output_path}'")
+    print("XPRESSO_OUTPUT_DIR:", os.environ.get("XPRESSO_OUTPUT_DIR"))
+    print("Writing files to:", output_dir)
+    print("Output files expected:", json_output_path, html_output_path)
+
