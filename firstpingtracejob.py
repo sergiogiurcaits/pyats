@@ -45,7 +45,7 @@ def main(runtime):
 
         results.append({
             "device": device_name,
-            "ip": mgmt_ip,
+            "ip": str(mgmt_ip),
             "ping_output": ping,
             "traceroute_output": trace
         })
