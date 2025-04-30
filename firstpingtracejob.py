@@ -6,7 +6,7 @@ from genie.testbed import load
 def main(runtime):
     # Load testbed
     if not runtime.testbed:
-        testbed_file = os.path.join('testbed29042025.yaml')  # Update if needed
+        testbed_file = os.path.join('testbed29042025.yaml')  # Update path if needed
         testbed = load(testbed_file)
     else:
         testbed = runtime.testbed
@@ -50,8 +50,8 @@ def main(runtime):
             "traceroute_output": trace
         })
 
-    # Use runtime.logdir to store outputs (Xpresso will archive this)
-    output_dir = runtime.logdir
+    # ✅ Corrected logdir reference
+    output_dir = runtime.runinfo.logdir
     os.makedirs(output_dir, exist_ok=True)
 
     json_output = os.path.join(output_dir, "ping_traceroute_results.json")
@@ -67,10 +67,12 @@ def main(runtime):
     <body><h1>Ping & Traceroute Results</h1><table border="1">
     <tr><th>Device</th><th>IP</th><th>Ping Output</th><th>Traceroute Output</th></tr>
     """
+
     for r in results:
         html += f"<tr><td>{r['device']}</td><td>{r['ip']}</td>"
         html += f"<td><pre>{r['ping_output']}</pre></td>"
         html += f"<td><pre>{r['traceroute_output']}</pre></td></tr>"
+
     html += "</table></body></html>"
 
     with open(html_output, "w") as f:
