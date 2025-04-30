@@ -80,7 +80,7 @@ def main(runtime):
                     continue
 
                 ip_addresses = Dq(ipv4).contains('ip').get_values('ip')
-                for ip in ip_addresses:
+                for ip in ipv4:
                     neighbor_ip = get_bgp_neighbor_ip(ip)
                     if "Error" in neighbor_ip:
                         print(neighbor_ip)
