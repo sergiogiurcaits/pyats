@@ -6,7 +6,7 @@ from genie.testbed import load
 def main(runtime):
     # Load testbed
     if not runtime.testbed:
-        testbed_file = os.path.join('testbed29042025.yaml')  # Update with your file if needed
+        testbed_file = os.path.join('testbed29042025.yaml')  # Update if needed
         testbed = load(testbed_file)
     else:
         testbed = runtime.testbed
@@ -16,7 +16,7 @@ def main(runtime):
     for device_name, device in testbed.devices.items():
         mgmt_ip = None
 
-        # Try to get management IP from 'connections' -> 'cli'
+        # Get management IP from connections
         if 'cli' in device.connections:
             cli_conn = device.connections['cli']
             mgmt_ip = cli_conn.get('ip') or cli_conn.get('host')
@@ -50,29 +50,27 @@ def main(runtime):
             "traceroute_output": trace
         })
 
-    # Archive directory for Xpresso
-    archive_dir = runtime.archive
-    os.makedirs(archive_dir, exist_ok=True)
+    # Use runtime.logdir to store outputs (Xpresso will archive this)
+    output_dir = runtime.logdir
+    os.makedirs(output_dir, exist_ok=True)
 
-    json_output = os.path.join(archive_dir, "ping_traceroute_results.json")
-    html_output = os.path.join(archive_dir, "ping_traceroute_report.html")
+    json_output = os.path.join(output_dir, "ping_traceroute_results.json")
+    html_output = os.path.join(output_dir, "ping_traceroute_report.html")
 
     # Save JSON results
     with open(json_output, "w") as f:
         json.dump(results, f, indent=4)
 
-    # Create simple HTML report
+    # Create HTML report
     html = """
     <html><head><title>Ping & Traceroute Report</title></head>
     <body><h1>Ping & Traceroute Results</h1><table border="1">
     <tr><th>Device</th><th>IP</th><th>Ping Output</th><th>Traceroute Output</th></tr>
     """
-
     for r in results:
         html += f"<tr><td>{r['device']}</td><td>{r['ip']}</td>"
         html += f"<td><pre>{r['ping_output']}</pre></td>"
         html += f"<td><pre>{r['traceroute_output']}</pre></td></tr>"
-
     html += "</table></body></html>"
 
     with open(html_output, "w") as f:
