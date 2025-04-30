@@ -6,7 +6,7 @@ from genie.testbed import load
 def main(runtime):
     # Load testbed
     if not runtime.testbed:
-        testbed_file = os.path.join('testbed.yaml')  # Update with your file if needed
+        testbed_file = os.path.join('testbed29042025.yaml')  # Update with your file if needed
         testbed = load(testbed_file)
     else:
         testbed = runtime.testbed
@@ -16,7 +16,7 @@ def main(runtime):
     for device_name, device in testbed.devices.items():
         mgmt_ip = None
 
-        # Try to get management IP from 'connections' -> 'defaults' or CLI
+        # Try to get management IP from 'connections' -> 'cli'
         if 'cli' in device.connections:
             cli_conn = device.connections['cli']
             mgmt_ip = cli_conn.get('ip') or cli_conn.get('host')
@@ -50,8 +50,15 @@ def main(runtime):
             "traceroute_output": trace
         })
 
-    # Save JSON
-    with open("ping_traceroute_results.json", "w") as f:
+    # Archive directory for Xpresso
+    archive_dir = runtime.archive
+    os.makedirs(archive_dir, exist_ok=True)
+
+    json_output = os.path.join(archive_dir, "ping_traceroute_results.json")
+    html_output = os.path.join(archive_dir, "ping_traceroute_report.html")
+
+    # Save JSON results
+    with open(json_output, "w") as f:
         json.dump(results, f, indent=4)
 
     # Create simple HTML report
@@ -68,9 +75,9 @@ def main(runtime):
 
     html += "</table></body></html>"
 
-    with open("ping_traceroute_report.html", "w") as f:
+    with open(html_output, "w") as f:
         f.write(html)
 
     print("Ping & traceroute results saved to:")
-    print(" - ping_traceroute_results.json")
-    print(" - ping_traceroute_report.html")
+    print(f" - {json_output}")
+    print(f" - {html_output}")
