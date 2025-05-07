@@ -145,6 +145,6 @@ class CommonCleanup(aetest.CommonCleanup):
 
 def main(runtime):
     # Optional override of testbed file
-    testbed = runtime.testbed or os.path.join(os.path.dirname(__file__), "testbed.yaml")
+    testbed = runtime.testbed or os.path.join(os.path.dirname(__file__), "testbed29042025.yaml")
 
     run(testscript=__file__, testbed=testbed)
