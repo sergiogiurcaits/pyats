@@ -48,7 +48,7 @@ class PingTest(aetest.Testcase):
             return f"Error: {e}"
 
     def process_device(self, device_name, device):
-        interfaces_output = device.parse('show interfaces')
+        interfaces_output = device.parse('show interfaces', timeout=3200)
         tasks = []
 
         for interface, details in interfaces_output.items():
